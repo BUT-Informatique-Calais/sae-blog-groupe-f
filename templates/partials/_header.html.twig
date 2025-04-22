@@ -1,0 +1,44 @@
+<nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{{ path('home') }}">Blog de l'IUT Informatique</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link{{ app.current_route == 'home' ? ' active': '' }}" href="{{ path('home') }}">Accueil</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link{{ app.current_route starts with 'article.' ? ' active': '' }}" href="{{ path('article.index') }}">Articles</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link{{ app.current_route starts with 'contact.' ? ' active': '' }}" href="{{ path('contact.index') }}">Contact</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        {% if app.user %}
+                            {{ app.user.email }}
+                        {% else %}
+                            Anonyme
+                        {% endif %}
+                    </a>
+                    <ul class="dropdown-menu bg-primary">
+                        {% if app.user %}
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <li><a class="dropdown-item" href="{{ path('admin.article.index') }}">Administration</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                            {% endif %}
+                            <li><a class="dropdown-item" href="{{ path('app_logout') }}">Me déconnecter</a></li>
+                        {% else %}
+                            <li><a class="dropdown-item" href="{{ path('app_login') }}">Se connecter</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_register') }}">S'inscrire</a></li>
+                        {% endif %}
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

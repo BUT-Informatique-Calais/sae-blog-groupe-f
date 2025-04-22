@@ -1,0 +1,9 @@
+{% extends 'layouts/admin.html.twig' %}
+
+{% set titre = categorie.label %}
+
+{% block page %}
+    {% for article in articles %}
+        {% include 'article/_card.html.twig' %}
+    {% endfor %}
+{% endblock %}

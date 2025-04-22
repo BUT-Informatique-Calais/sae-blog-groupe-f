@@ -1,0 +1,8 @@
+{% extends 'layouts/admin.html.twig' %}
+
+{% set titre = 'Catégories' %}
+
+{% block page %}
+    <div class="d-flex justify-content-end mb-2"><a href="{{ path('admin.categorie.new') }}" class="blog-button bb-blue">Nouvelle catégorie</a></div>
+    {% include 'admin/categorie/_table.html.twig' %}
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+	<div class="container mx-auto mt-2">
+		<h1>{{ titre|default('Accueil') }}</h1>
+		<div class="grid grid-cols-4 gap-4 content-start">
+			{% block page %}{% endblock %}
+		</div>
+	</div>
+{% endblock %}

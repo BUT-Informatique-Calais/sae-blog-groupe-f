@@ -1,0 +1,9 @@
+{% extends 'layouts/_page.html.twig' %}
+
+{% set titre = "Dernières actualités" %}
+
+{% block page %}
+    {% for article in articles %}
+        {% include 'article/_card.html.twig' %}
+    {% endfor %}
+{% endblock %}

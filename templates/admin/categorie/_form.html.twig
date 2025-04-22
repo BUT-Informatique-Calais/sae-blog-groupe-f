@@ -1,0 +1,11 @@
+{{ form_start(form) }}
+<div class="row">
+    <div class="col">
+        {{ form_row(form.label) }}
+    </div>
+</div>
+<div class="d-flex justify-content-end">
+    <input type="submit" class="blog-button bb-green" value="Enregistrer">
+    <a href="{{ path('admin.categorie.index') }}" class="blog-button ms-1">Retour</a>
+</div>
+{{ form_end(form) }}

@@ -1,0 +1,10 @@
+{% extends 'layouts/admin.html.twig' %}
+
+{% set titre = "Dernières actualités" %}
+
+{% block page %}
+    <div class="d-flex justify-content-end mb-2"><a href="{{ path('admin.article.new') }}" class="blog-button bb-blue">Nouvel article</a></div>
+    {% for article in articles %}
+        {% include 'article/_card.html.twig' %}
+    {% endfor %}
+{% endblock %}
