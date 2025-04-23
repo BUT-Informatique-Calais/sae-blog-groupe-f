@@ -18,10 +18,10 @@ services:
     depends_on:
       - php
     volumes:
-      - ./apache/symfony.conf:/usr/local/apache2/conf/httpd.conf
+      - ./apache/symfony.conf:/usr/local/apache-1/conf/httpd.conf
       - php:/var/www/html
     ports:
-      - "8080:80"
+      - "8082:80"
     networks:
       - app-network
 
