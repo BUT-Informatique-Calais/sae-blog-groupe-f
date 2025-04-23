@@ -1,0 +1,4 @@
+mysql/mysql.sock
+node_modules
+*.log
+*.tmp

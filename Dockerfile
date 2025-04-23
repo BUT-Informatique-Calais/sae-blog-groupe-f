@@ -1,29 +1,18 @@
+# Utiliser une image de base PHP avec Apache
 FROM php:8.2-apache
 
 # Installer les extensions PHP nécessaires
-RUN apt-get update && apt-get install -y \
-    libicu-dev \
-    libzip-dev \
-    unzip \
-    git \
-    && docker-php-ext-install intl pdo_mysql zip
+RUN curl -sSLf -o /usr/local/bin/install-php-extensions \
+    https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions && \
+    chmod +x /usr/local/bin/install-php-extensions
 
-# Activer le module Apache mod_rewrite
-RUN a2enmod rewrite
+RUN install-php-extensions opcache gd soap pdo_pgsql pdo_mysql intl xdebug apcu zip memcached @composer
 
-# Copier les fichiers de l'application Symfony
+# Copier les fichiers du projet dans le conteneur
 COPY . /var/www/html
 
 # Définir le répertoire de travail
 WORKDIR /var/www/html
 
-# Configurer Git pour ignorer les erreurs de propriété
-RUN git config --global --add safe.directory /var/www/html
-
-# Installer Composer
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-ENV APP_ENV=dev
-RUN composer install --optimize-autoloader --no-scripts
-
-# Définir les permissions
-RUN chown -R www-data:www-data /var/www/html
+# Activer le module Apache pour Symfony
+RUN a2enmod rewrite
