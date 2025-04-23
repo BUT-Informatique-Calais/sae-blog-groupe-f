@@ -1,39 +1,84 @@
 services:
-  app:
+  # Service PHP
+  php:
     build:
       context: .
       dockerfile: Dockerfile
-    ports:
-      - "8000:80"
     volumes:
-      - .:/var/www/html
-    environment:
-      DATABASE_URL: mysql://root:password@db:3306/symfony
+      - php:/var/www/html
+    networks:
+      - app-network
     depends_on:
-      - db
-
-  db:
-    image: mysql:8.0
+      - mysql
     environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: symfony
-    ports:
-      - "3306:3306"
-
-  mailpit:
-    image: axllent/mailpit
-    ports:
-      - "8025:8025"
+      APACHE_DOCUMENT_ROOT: /var/www/html/public
 
   apache:
-    image: php:8.2-apache
-    container_name: symfony-apache
+    image: httpd:2.4
+    depends_on:
+      - php
+    volumes:
+      - ./apache/symfony.conf:/usr/local/apache2/conf/httpd.conf
+      - php:/var/www/html
     ports:
       - "8080:80"
+    networks:
+      - app-network
+
+  # Service MySQL
+  mysql:
+    image: mysql:8.0 
     volumes:
-      - .:/var/www/html
+      - mysql:/var/lib/mysql
+    networks:
+      - app-network
     environment:
-      APP_ENV: dev
-      APP_SECRET: 176961b8eced9a40ccbf9835a8eac711
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: symfony
+      MYSQL_USER: symfony
+      MYSQL_PASSWORD: symfony
+
+  # Service PhpMyAdmin
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
     depends_on:
-      - db
+      - mysql
+    networks:
+      - app-network
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: symfony
+      PMA_PASSWORD: symfony
+
+  # Service MailPit
+  mailpit:
+    image: axllent/mailpit
+    networks:
+      - app-network
+    ports:
+      - "8025:8025"
+    volumes:
+      - mailpit:/data
+
+  # Service Node
+  node:
+    image: node:18
+    volumes:
+      - node:/usr/src/app
+    networks:
+      - app-network
+    working_dir: /usr/src/app
+    command: tail -f /dev/null
+
+volumes:
+  php:
+  apache:
+  mysql:
+  mailpit:
+  node:
+
+networks:
+  app-network:
+    driver: bridge

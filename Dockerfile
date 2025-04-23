@@ -1,15 +1,12 @@
-FROM php:8.2-apache
+FROM php:8.2.10-fpm-alpine3.18
 
 # Installer les extensions PHP nécessaires
-RUN apt-get update && apt-get install -y \
-    libicu-dev \
+RUN apk add --no-cache \
+    icu-dev \
     libzip-dev \
     unzip \
     git \
     && docker-php-ext-install intl pdo_mysql zip
-
-# Activer le module Apache mod_rewrite
-RUN a2enmod rewrite
 
 # Copier les fichiers de l'application Symfony
 COPY . /var/www/html
