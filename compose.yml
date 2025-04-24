@@ -23,7 +23,6 @@ services:
     volumes:
       - ./public:/var/www/html/public
 
-
   # Service MySQL
   mysql:
     image: mysql:8.0
@@ -36,20 +35,6 @@ services:
       MYSQL_DATABASE: symfony
       MYSQL_USER: symfony
       MYSQL_PASSWORD: symfony
-
-  # Service PhpMyAdmin
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    depends_on:
-      - mysql
-    networks:
-      - app-network
-    ports:
-      - "8081:80"
-    environment:
-      PMA_HOST: mysql
-      PMA_USER: symfony
-      PMA_PASSWORD: symfony
 
   # Service MailPit
   mailpit:
