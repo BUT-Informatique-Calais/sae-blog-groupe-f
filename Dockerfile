@@ -8,9 +8,6 @@ RUN curl -sSLf -o /usr/local/bin/install-php-extensions \
 
 RUN install-php-extensions opcache gd soap pdo_pgsql pdo_mysql intl xdebug apcu zip memcached @composer
 
-# Copier les fichiers du projet dans le conteneur
-COPY . /var/www/html
-
 # Définir le répertoire de travail
 WORKDIR /var/www/html
 

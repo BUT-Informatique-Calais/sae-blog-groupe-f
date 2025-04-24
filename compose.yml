@@ -8,6 +8,8 @@ services:
       - app-network
     expose:
       - 9000
+    volumes:
+      - ./:/var/www/html
 
   # Service Apache
   apache:
@@ -21,7 +23,7 @@ services:
     networks:
       - app-network
     volumes:
-      - ./public:/var/www/html/public
+      - ./:/var/www/html
 
   # Service MySQL
   mysql:
