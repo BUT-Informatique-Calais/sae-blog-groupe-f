@@ -6,8 +6,13 @@ COPY ./apache/symfony.conf /usr/local/apache2/conf/extra/symfony.conf
 # Ajouter une directive Include dans httpd.conf
 RUN echo "Include conf/extra/symfony.conf" >> /usr/local/apache2/conf/httpd.conf
 
-# Activer le module rewrite
+# Activer les modules nécessaires
+RUN sed -i '/LoadModule proxy_module/s/^#//g' /usr/local/apache2/conf/httpd.conf
+RUN sed -i '/LoadModule proxy_fcgi_module/s/^#//g' /usr/local/apache2/conf/httpd.conf
 RUN sed -i '/LoadModule rewrite_module/s/^#//g' /usr/local/apache2/conf/httpd.conf
 
-RUN chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html
+# Créer le répertoire /var/www/html
+RUN mkdir -p /var/www/html
 
+# Donner les permissions au répertoire
+RUN chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html
