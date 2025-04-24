@@ -16,3 +16,6 @@ WORKDIR /var/www/html
 
 # Activer le module Apache pour Symfony
 RUN a2enmod rewrite
+
+# Donner les permissions à l'utilisateur www-data
+RUN chown -R www-data:www-data /var/www/html

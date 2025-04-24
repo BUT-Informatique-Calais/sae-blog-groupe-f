@@ -1,29 +1,30 @@
 services:
   # Service PHP
   php:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: php:8.2-fpm
     volumes:
-      - php:/var/www/html
+      - .:/var/www/html
     networks:
       - app-network
     depends_on:
       - mysql
     environment:
-      APACHE_DOCUMENT_ROOT: /var/www/html/public
+      PHP_MEMORY_LIMIT: 512M
 
+  # Service Apache
   apache:
     image: httpd:2.4
     depends_on:
       - php
     volumes:
-      - ./apache/symfony.conf:/usr/local/apache-1/conf/httpd.conf
-      - php:/var/www/html
+      - ./apache/symfony.conf:/usr/local/apache2/conf/extra/symfony.conf
+      - .:/var/www/html
     ports:
       - "8080:80"
     networks:
       - app-network
+    command: >
+      sh -c "echo 'Include conf/extra/symfony.conf' >> /usr/local/apache2/conf/httpd.conf && httpd-foreground"
 
   # Service MySQL
   mysql:
