@@ -22,13 +22,13 @@ services:
       - app-network
     volumes:
       - ./public:/var/www/html/public
-      
+
 
   # Service MySQL
   mysql:
     image: mysql:8.0
     volumes:
-      - mysql:/var/lib/mysql
+      - ./mysql-init:/docker-entrypoint-initdb.d
     networks:
       - app-network
     environment:
